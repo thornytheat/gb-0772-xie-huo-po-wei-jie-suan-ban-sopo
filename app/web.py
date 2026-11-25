@@ -9,7 +9,7 @@ from app.archive.appeal import issue
 from app.clearing import Clearing
 from app.curb.timeaxis import local
 from app.problems import DocketError,LABEL
-from app.setup import POLICY
+from app.setup import DEFAULT_GRACE_MINUTES, POLICY
 from app.source.packet import bundle
 
 STEPS={'intake':'停靠与预约采信','identity':'车牌匿名关联','occupancy':'占用区间重建','pricing':'首免与升级价',
@@ -50,3 +50,16 @@ def screen(request:Request,screen:str='overview',sample:str='dirty',key:str|None
     return views.get_template('desk.html').render(screen=screen,steps=STEPS,index=index,next_step=stages[index+1] if index<6 else None,
         previous=stages[index-1] if index>0 else None,path=path,key=key,sample=sample,report=report,meta=meta,
         history=history,signed=signed,label=LABEL,local=local,yuan=yuan)
+
+
+@workbench.get('/dispatch',response_class=HTMLResponse)
+def dispatch_board(request:Request):
+    store=request.app.state.releases
+    releases=jsonable_encoder(store.list_releases())
+    backfills=jsonable_encoder(store.list_backfills())
+    totals={'releases':len(releases),
+            'published':sum(sum(1 for m in r['minutes'] if m['state']=='PUBLISHED') for r in releases),
+            'blocked':sum(sum(1 for m in r['minutes'] if m['state']=='BLOCKED') for r in releases),
+            'revoked':sum(sum(1 for m in r['minutes'] if m['state']=='REVOKED') for r in releases)}
+    return views.get_template('dispatch.html').render(releases=releases,backfills=backfills,totals=totals,
+        label=LABEL,local=local,yuan=yuan,default_grace=DEFAULT_GRACE_MINUTES)

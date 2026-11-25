@@ -14,6 +14,7 @@
 | M5 应实收和泊位对账 | 查看逐单差价、游离回执与泊位容量 | `GET /api/cases/dirty/settlement` | `app/billing/settle.py` `app/billing/payments.py` | `tests/test_settlement.py` |
 | M6 批次留档复跑 | 原子落档、查历史及重放 | `POST /api/dockets` | `app/archive/docket.py` `app/archive/rerun.py` | `tests/test_docket.py` |
 | M7 理赔证据签发 | 签发并核验脱敏证据、摘要与勾稽 | `GET /api/export/{key}` | `app/archive/appeal.py` `app/archive/canonical.py` | `tests/test_appeal.py` |
+| M8 调度放行与补报 | 发布可用时段、补报撤回与临停核价 | `GET /dispatch` `POST /api/dispatch/releases` | `app/dispatch/service.py` `app/dispatch/store.py` | `tests/test_dispatch.py` `tests/test_dispatch_api.py` |
 
 ## 陷阱登记
 

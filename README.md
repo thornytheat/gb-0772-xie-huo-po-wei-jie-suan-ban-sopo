@@ -30,3 +30,8 @@ python -m pytest -q
 - [字段、计费与边界](docs/DATA-DICTIONARY.md)
 - [模块和陷阱](docs/DEPTH.md)
 - [理赔复核步骤](docs/APPEAL.md)
+- [调度放行与杆侧补报](docs/DISPATCH.md)
+
+## 调度放行
+
+宽限后原车未到，可在 `http://localhost:18471/dispatch` 发布临时可用时段，或调用 `POST /api/dispatch/releases`。与下笔有效预约重叠的分钟标 `BLOCKED` 留给预约；晚到杆侧记录走 `POST /api/dispatch/backfills`，证实有车只撤回相撞分钟并保留原凭据，准时补报保留首免、迟到按临停核价。两班同提交只出一份凭据，重跑旧清单不覆盖补报结果。

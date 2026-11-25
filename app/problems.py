@@ -13,4 +13,7 @@ LABEL = {
     'BOOKED':'预约已关联','WALK_IN':'无生效预约','GAP':'实收差价','MATCH':'实收一致',
     'NO_PAYMENT':'无实收回执','ORPHAN':'游离实收','ATTACH_CONFLICT':'预约版本冲突',
     'AMOUNT':'金额无效','UNKNOWN_SENSOR':'杆侧来源缺失','NONE':'无占位',
+    'PUBLISHED':'放行有效','BLOCKED':'留给下笔预约','REVOKED':'补报撤回',
+    'HONORED':'原车准时首免','TEMPORARY':'临停核价','RELEASE_GAP':'放行后空闲',
+    'GRACE':'宽限未到','REQUEST_BAD':'放行请求无效','BACKFILL_BAD':'补报无效',
 }

@@ -7,6 +7,8 @@ from fastapi.staticfiles import StaticFiles
 
 from app.api import api
 from app.archive.docket import Docket
+from app.dispatch.api import router as dispatch_router
+from app.dispatch.store import ReleaseStore
 from app.problems import DocketError
 from app.web import workbench
 
@@ -14,8 +16,10 @@ from app.web import workbench
 def create_app(path=None):
     app=FastAPI(title='卸货泊位结算板')
     app.state.docket=Docket(path or os.getenv('CURB_DOCKET','var/curb.sqlite3'))
+    app.state.releases=ReleaseStore(os.getenv('CURB_RELEASE',app.state.docket.path))
     app.mount('/static',StaticFiles(directory=Path(__file__).parent/'static'),name='static')
     app.include_router(api)
+    app.include_router(dispatch_router)
     app.include_router(workbench)
 
     @app.exception_handler(DocketError)
